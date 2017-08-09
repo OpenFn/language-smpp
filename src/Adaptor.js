@@ -30,16 +30,16 @@ export function execute(...operations) {
 export function send(params) {
 
   return state => {
-    const { recipient, sender, text, message_uuid } = expandReferences(params)(state);
+    const { recipient, sender, text, smsId } = expandReferences(params)(state);
 
-    const { system_id, password, clientHost, inbox_uuid } = state.configuration;
+    const { systemId, password, clientHost, inboxId } = state.configuration;
 
-    const url = `${clientHost}/smpp/${inbox_uuid}/send`
+    const url = `${clientHost}/smpp/${inboxId}/send`
 
-    const body = { recipient, sender, text, message_uuid, inbox_uuid }
+    const body = { recipient, sender, text, smsId, inboxId }
 
     const auth = {
-      'username': system_id,
+      'username': systemId,
       'password': password,
       'sendImmediately': true
     };

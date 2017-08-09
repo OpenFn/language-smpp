@@ -48,8 +48,8 @@ describe("send", () => {
     "recipient": "alexis",
     "sender": "taylor",
     "text": "hi mom!",
-    "message_uuid": "1111",
-    "inbox_uuid": "1c908151-8273-431c-b1d4-8bfe2b5c65df"
+    "messageId": "1111",
+    "inboxId": "1c908151-8273-431c-b1d4-8bfe2b5c65df"
   };
 
   before(() => {
@@ -64,16 +64,16 @@ describe("send", () => {
   it("sends a message", () => {
     let state = {
       "configuration": {
-        "system_id": "lwr_airtel_niger",
+        "systemId": "lwr_airtel_niger",
         "password": "password",
         "clientHost": "https://www.openfunction.io",
-        "inbox_uuid": "1c908151-8273-431c-b1d4-8bfe2b5c65df"
+        "inboxId": "1c908151-8273-431c-b1d4-8bfe2b5c65df"
       },
       "data": {
         "from": "taylor",
         "to": "alexis",
         "text": "hi mom!",
-        "message_uuid": "1111"
+        "messageId": "1111"
       }
     };
 
@@ -93,8 +93,8 @@ describe("send", () => {
       // Check that the appropriate data made it to the request from state.
       expect(responseBody.smsData).to.eql({
         text: state.data.text,
-        message_uuid: state.data.message_uuid,
-        inbox_uuid: state.configuration.inbox_uuid,
+        messageId: state.data.messageId,
+        inboxId: state.configuration.inboxId,
         recipient: state.data.to,
         sender: state.data.from
       })

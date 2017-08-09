@@ -10,16 +10,16 @@ Documentation
 ```json
 {
   "configuration": {
-    "system_id": "some_smpp_client_name",
+    "systemId": "some_smpp_client_name",
     "password": "password",
     "clientHost": "http://localhost:4000",
-    "inbox_uuid": "1c908151-8273-431c-b1d4-blah"
+    "inboxId": "1c908151-8273-431c-b1d4-blah"
   },
   "data": {
     "from": "taylor",
     "to": "alexis",
     "text": "hi mom!",
-    "message_uuid": "0001"
+    "messageId": "0001"
   }
 }
 ```
