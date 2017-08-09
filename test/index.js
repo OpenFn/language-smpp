@@ -4,7 +4,7 @@ import nock from 'nock';
 import ClientFixtures, { fixtures } from './ClientFixtures'
 
 import Adaptor from '../src';
-const { execute, event, dataElement, get } = Adaptor;
+const { execute, event, dataElement, send } = Adaptor;
 
 
 describe("execute", () => {
@@ -42,37 +42,62 @@ describe("execute", () => {
   })
 })
 
-describe("createEntity", () => {
+describe("send", () => {
+
+  let wishedBody = {
+    "recipient": "alexis",
+    "sender": "taylor",
+    "text": "hi mom!",
+    "message_uuid": "1111",
+    "inbox_uuid": "1c908151-8273-431c-b1d4-8bfe2b5c65df"
+  };
 
   before(() => {
-     nock('https://play.http.org')
-       .get('/demo/api/events')
-       .reply(200, { foo: 'bar' });
+     nock('https://www.openfunction.io')
+       .post('/smpp/1c908151-8273-431c-b1d4-8bfe2b5c65df/send')
+       .reply(200, {
+         "status": "SMS sent succesfully.",
+         "smsData": wishedBody
+       });
   })
 
-  it("calls the callback", () => {
+  it("sends a message", () => {
     let state = {
-      configuration: {
-        username: "hello",
-        password: "there",
-        baseUrl: 'https://play.http.org/demo'
+      "configuration": {
+        "system_id": "lwr_airtel_niger",
+        "password": "password",
+        "clientHost": "https://www.openfunction.io",
+        "inbox_uuid": "1c908151-8273-431c-b1d4-8bfe2b5c65df"
+      },
+      "data": {
+        "from": "taylor",
+        "to": "alexis",
+        "text": "hi mom!",
+        "message_uuid": "1111"
       }
     };
 
     return execute(
-      get("api/events", {
-        callback: (response, state) => {
-          return { ...state, references: [response] }
-        },
-        username: null
+      send({
+        text: state.data.text,
+        message_uuid: state.data.message_uuid,
+        recipient: state.data.to,
+        sender: state.data.from
       })
     )(state)
     .then((state) => {
-      let responseBody = state.references[0].response.body
+      let responseBody = state.response.body
 
-      // Check that the eventData made it's way to the request as a string.
-      expect(responseBody).
-        to.eql({foo: 'bar'})
+      // Check that an HTTP post is made to the correct endpoint.
+      expect(responseBody.status).to.eql("SMS sent succesfully.")
+      // Check that the appropriate data made it to the request from state.
+      expect(responseBody.smsData).to.eql({
+        text: state.data.text,
+        message_uuid: state.data.message_uuid,
+        inbox_uuid: state.configuration.inbox_uuid,
+        recipient: state.data.to,
+        sender: state.data.from
+      })
 
     })
 

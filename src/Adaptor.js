@@ -25,13 +25,24 @@ export function execute(...operations) {
   return state => {
     return commonExecute(...operations)({ ...initialState, ...state })
   };
-
 }
-
 
 export function send(params) {
 
   return state => {
+    const { recipient, sender, text, message_uuid } = expandReferences(params)(state);
+
+    const { system_id, password, clientHost, inbox_uuid } = state.configuration;
+
+    const url = `${clientHost}/smpp/${inbox_uuid}/send`
+
+    const body = { recipient, sender, text, message_uuid, inbox_uuid }
+
+    const auth = {
+      'username': system_id,
+      'password': password,
+      'sendImmediately': true
+    };
 
     function assembleError({ response, error }) {
       if (response && ([200,201,202,204].indexOf(response.statusCode) > -1)) return false;
@@ -39,34 +50,20 @@ export function send(params) {
       return new Error(`Server responded with ${response.statusCode}`)
     }
 
-    const { resource, accessToken, apiVersion } = state.configuration;
-
-    const { entityName, body } = expandReferences(params)(state);
-
-    const url = `${resource}/api/data/v${apiVersion}/${entityName}`;
-
-    const headers = {
-      'OData-MaxVersion': '4.0',
-      'OData-Version': '4.0',
-      'Content-Type': 'application/json',
-      'Authorization': accessToken
-    };
-
-    console.log("Posting to url: " + url);
+    console.log("Sending message... " + url);
     console.log("With body: " + JSON.stringify(body, null, 2));
-
 
     return new Promise((resolve, reject) => {
       request.post ({
         url: url,
         json: body,
-        headers
+        auth
       }, function(error, response, body){
         error = assembleError({response, error})
         if(error) {
           reject(error);
         } else {
-          console.log("Create entity succeeded.");
+          console.log("Message sent..!");
           console.log(body)
           resolve(body);
         }
@@ -75,9 +72,7 @@ export function send(params) {
       const nextState = { ...state, response: { body: data } };
       return nextState;
     })
-
   };
-
 };
 
 export {
