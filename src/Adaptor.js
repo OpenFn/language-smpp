@@ -62,9 +62,8 @@ export function send(params) {
         if(error) {
           reject(error);
         } else {
-          console.log("Message sent..!");
-          console.log(body)
-          resolve(body);
+          console.log("Message sent to SMPP server: " + response.statusCode + "/" + response.statusMessage);
+          resolve(response);
         }
       })
     }).then((data) => {
