@@ -28,7 +28,7 @@ Documentation
 ```js
 send({
   text: dataValue("text"),
-  message_uuid: dataValue("message_uuid"),
+  smsId: dataValue("messageId"),
   recipient: dataValue("to"),
   sender: dataValue("from")
 });

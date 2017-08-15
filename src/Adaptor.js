@@ -36,12 +36,11 @@ export function send(params) {
 
     const url = `${clientHost}/smpp/${inboxId}/send`
 
-    const body = { recipient, sender, text, smsId, inboxId }
+    const body = { recipient, sender, text, smsId }
 
     const auth = {
       'username': systemId,
-      'password': password,
-      'sendImmediately': true
+      'password': password
     };
 
     function assembleError({ response, error }) {
