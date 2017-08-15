@@ -86,7 +86,7 @@ describe("send", () => {
       })
     )(state)
     .then((state) => {
-      let responseBody = state.response.body
+      let responseBody = state.response.body.body
 
       // Check that an HTTP post is made to the correct endpoint.
       expect(responseBody.status).to.eql("SMS sent succesfully.")
