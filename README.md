@@ -6,21 +6,13 @@ Language Pack for building expressions and operations to make calls to an OpenFn
 Documentation
 -------------
 
-#### sample state
+#### sample configuration
 ```json
 {
-  "configuration": {
-    "systemId": "some_smpp_client_name",
-    "password": "password",
-    "clientHost": "http://localhost:4000",
-    "inboxId": "1c908151-8273-431c-b1d4-blah"
-  },
-  "data": {
-    "from": "taylor",
-    "to": "alexis",
-    "text": "hi mom!",
-    "messageId": "0001"
-  }
+  "systemId": "some_smpp_client_name",
+  "password": "password",
+  "clientHost": "http://localhost:4000",
+  "inboxId": "1c908151-8273-431c-b1d4-blah"
 }
 ```
 
