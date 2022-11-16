@@ -1,4 +1,9 @@
-Language SMPP [![Build Status](https://travis-ci.org/OpenFn/language-smpp.svg?branch=master)](https://travis-ci.org/OpenFn/language-smpp)
+# _⚠️ MOVED TO [OpenFn/adaptors](https://github.com/OpenFn/adaptors)! ⚠️_
+
+**N.B.: New versions are available at:
+https://github.com/OpenFn/adaptors/tree/main/packages/smpp**
+
+# Language SMPP (Archived)
 =============
 
 Language Pack for building expressions and operations to make calls to an OpenFn SMPP client API.
